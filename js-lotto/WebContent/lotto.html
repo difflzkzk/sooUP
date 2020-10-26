@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+	#red {background-color: red;}
+	#orange {background-color: orange;}
+	#yellow {background-color: yellow;}
+	#green {background-color: green;}
+	#blue {background-color: blue;}
+	#purple {background-color: purple;}
+	.colorBox {
+		width: 120px; height: 120px;
+		border: 1px solid gray; display: table; 
+		float:left; margin-right: 10px;
+	}
+	.numBox {
+		font-size: 50px; font-weight: bold; 
+		display: table-cell; text-align: center; vertical-align: middle; 
+	}
+	.btnBox {
+		clear:left;
+	}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+	let ball = [];
+	for(let i=0; i<45; i++) {
+		ball[i] = i+1; // 1~45숫자를 가진 ball이 생성
+	}
+	console.log('ball초기화 : ', ball);
+	
+	for(let i=0; i<100000; i++) {
+		let temp = ball[0];
+		let r = Math.floor(Math.random()*45); // 0~44 Math.floor 소숫점 자리 버림
+		ball[0] = ball[r];
+		ball[r] = temp;
+	}
+	let result = ball.slice(0, 6); //6 칸 가로로
+	console.log('생성된 로또번호 : ', result);
+	// setInterval(함수,시간ms), clearInterval(setInterval결과값), setTimeout(함수 , 시간	) 시간과 관련된 API 
+	// 반복
+	let redTime;
+	let orangeTime;
+	let yellowTime;
+	let greenTime;
+	let blueTime;
+	let purpleTime;
+	let startCk = false;
+	let stopCk = false;
+	$('#startBtn').click(function(){
+		if(startCk) {
+			alert('startBtn 한번만 클릭 가능');
+			return;
+		}
+		startCk = true;
+		redTime = setInterval(function(){
+						$('#redNum').text(Math.floor(Math.random()*45+1));
+					}, 20);
+		orangeTime = setInterval(function(){
+			$('#orangeNum').text(Math.floor(Math.random()*45+1));
+		}, 20);
+		yellowTime = setInterval(function(){
+			$('#yellowNum').text(Math.floor(Math.random()*45+1));
+		}, 20);
+		greenTime = setInterval(function(){
+			$('#greenNum').text(Math.floor(Math.random()*45+1));
+		}, 20);
+		blueTime = setInterval(function(){
+			$('#blueNum').text(Math.floor(Math.random()*45+1));
+		}, 20);
+		purpleTime = setInterval(function(){
+			$('#purpleNum').text(Math.floor(Math.random()*45+1));
+		}, 20);
+	});
+	
+	$('#stopBtn').click(function(){
+		if(!startCk || stopCk) {//stop 은 startCK가 false이면 안되고 stop도 false
+			alert('stop 한번만 클릭 가능');
+			return;
+		}
+		
+		setTimeout(function(){
+				clearInterval(redTime);
+				$('#redNum').text(result[0]);
+			}, 1); // 0.001초 후에 함수를 실행
+		
+		setTimeout(function(){
+				clearInterval(orangeTime);
+				$('#orangeNum').text(result[1]);
+			}, 500); 
+			
+		setTimeout(function(){
+				clearInterval(yellowTime);
+				$('#yellowNum').text(result[2]);
+			}, 1000); 
+		
+		setTimeout(function(){
+				clearInterval(greenTime);
+				$('#greenNum').text(result[3]);
+			}, 1500); // 0.001초 후에 함수를 실행	
+			
+		setTimeout(function(){
+				clearInterval(blueTime);
+				$('#blueNum').text(result[4]);
+			}, 2000); 
+		
+		setTimeout(function(){
+				clearInterval(purpleTime);
+				$('#purpleNum').text(result[6]);
+			}, 2500); 
+	});
+});
+</script>
+</head>
+<body>
+	<h1>로또번호 생성기</h1>
+	<div class="colorBox" id="red"><p class="numBox" id="redNum">0</p></div>
+	<div class="colorBox" id="orange"><p class="numBox" id="orangeNum">0</p></div>
+	<div class="colorBox" id="yellow"><p class="numBox" id="yellowNum">0</p></div>
+	<div class="colorBox" id="green"><p class="numBox" id="greenNum">0</p></div>
+	<div class="colorBox" id="blue"><p class="numBox" id="blueNum">0</p></div>
+	<div class="colorBox" id="purple"><p class="numBox" id="purpleNum">0</p></div>
+
+	<nav class="btnBox">
+		<button type="button" id="startBtn">start</button>
+		<button type="button" id="stopBtn">stop</button>
+	</nav>
+</body>
+</html>
